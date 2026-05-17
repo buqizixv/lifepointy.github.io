@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>夸我厉害 - 整蛊工具箱</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:100vw;height:100vh;overflow:hidden;background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);font-family:'PingFang SC','Microsoft YaHei',sans-serif;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;cursor:default}
+.container{text-align:center;position:relative}
+.question{font-size:clamp(20px,4vw,32px);color:#fff;margin-bottom:30px;font-weight:bold;letter-spacing:2px}
+.btns{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;position:relative}
+.btn{padding:14px 36px;border:none;border-radius:50px;font-size:clamp(14px,2.5vw,18px);cursor:pointer;font-family:inherit;letter-spacing:1px;transition:all .2s;position:relative;z-index:1}
+.btn-comply{background:linear-gradient(135deg,#8e2de2,#4a00e0);color:#fff;font-weight:bold}
+.btn-comply:hover{transform:scale(1.05);box-shadow:0 6px 30px rgba(142,45,226,.4)}
+.btn-refuse{background:rgba(255,255,255,.12);color:#ccc}
+.btn-refuse:hover{background:rgba(255,255,255,.2)}
+.success-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);display:none;align-items:center;justify-content:center;z-index:100}
+.success-overlay.show{display:flex}
+.success-box{background:#1a1a2e;border:2px solid rgba(142,45,226,.5);border-radius:20px;padding:40px 50px;text-align:center;max-width:400px;animation:popIn .5s cubic-bezier(.175,.885,.32,1.275)}
+@keyframes popIn{0%{transform:scale(.3);opacity:0}100%{transform:scale(1);opacity:1}}
+.success-box .emoji{font-size:60px;margin-bottom:12px}
+.success-box h2{color:#8e2de2;font-size:24px;margin-bottom:8px}
+.success-box p{color:#aaa;font-size:14px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="question">🌟 我是不是超厉害？快夸我！</div>
+<div class="btns" id="btnContainer">
+<button class="btn btn-comply" id="btnComply">夸你厉害</button>
+<button class="btn btn-refuse" id="btnRefuse">懒得夸</button>
+</div>
+</div>
+<div class="success-overlay" id="successOverlay">
+<div class="success-box"><div class="emoji">💪</div><h2>🏆 果然是真朋友！</h2><p>你夸得很到位，继续保持！</p></div>
+</div>
+<script>
+var refuseCount=0,teleportEnabled=false,mouseChaseEnabled=false;
+var btnComply=document.getElementById('btnComply');
+var btnRefuse=document.getElementById('btnRefuse');
+var overlay=document.getElementById('successOverlay');
+btnComply.addEventListener('click',function(){overlay.classList.add('show')});
+btnRefuse.addEventListener('click',function(e){
+refuseCount++;
+var s=1+refuseCount*0.5;
+btnComply.style.transform='scale('+s+')';
+btnComply.style.padding=(14+refuseCount*8)+'px '+(36+refuseCount*16)+'px';
+btnComply.style.fontSize=(18+refuseCount*4)+'px';
+btnComply.style.zIndex=10;
+if(refuseCount>=2){btnRefuse.style.position='fixed';btnRefuse.style.left=Math.random()*(window.innerWidth-120)+'px';btnRefuse.style.top=Math.random()*(window.innerHeight-50)+'px';btnRefuse.style.zIndex=1}
+if(refuseCount>=3&&!mouseChaseEnabled){mouseChaseEnabled=true;document.addEventListener('mousemove',function(e){if(refuseCount<3)return;var r=btnRefuse.getBoundingClientRect();var cx=r.left+r.width/2,cy=r.top+r.height/2;if(Math.hypot(e.clientX-cx,e.clientY-cy)<150){btnRefuse.style.position='fixed';var a=Math.atan2(e.clientY-cy,e.clientX-cx);btnRefuse.style.left=Math.max(0,Math.min(window.innerWidth-120,cx-Math.cos(a)*220))+'px';btnRefuse.style.top=Math.max(0,Math.min(window.innerHeight-50,cy-Math.sin(a)*220))+'px'}})}
+if(refuseCount>=4&&!teleportEnabled){teleportEnabled=true;function run(){btnRefuse.style.left=Math.random()*(window.innerWidth-120)+'px';btnRefuse.style.top=Math.random()*(window.innerHeight-50)+'px'}btnRefuse.addEventListener('mouseenter',run);btnRefuse.addEventListener('touchstart',function(e){e.preventDefault();run()})}
+if(refuseCount>=6){btnRefuse.style.position='fixed';btnRefuse.style.left=(window.innerWidth+300)+'px';btnRefuse.style.top=(window.innerHeight+300)+'px';btnRefuse.style.transition='all .2s';btnRefuse.style.pointerEvents='none'}
+});
+</script>
+</body>
+</html>
