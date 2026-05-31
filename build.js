@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DOMAIN = process.argv[2] || 'https://unorthodoxhacks.life';
+const DOMAIN = process.argv[2] || 'https://lifepointy.site';
 const ROOT = __dirname;
 
 // --- Load Data ---
